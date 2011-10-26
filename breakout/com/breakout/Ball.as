@@ -34,6 +34,12 @@ package com.breakout
 				this.vx *= -1;
 				adjustAngle();
 			}
+			if (this.nextBottom > Breakout.BOTTOM)
+			{
+				this.bottom = Breakout.BOTTOM;
+				this.vy *= -1;
+				adjustAngle();
+			}
 			
 			this.vx = Math.cos(this.rads) * speed;
 			this.vy = Math.sin(this.rads) * speed;
@@ -57,7 +63,7 @@ package com.breakout
 		
 		public function get angleMod():Number
 		{
-			return this.vy < 0 ? angleChange: -angleChange;
+			return Math.random() * (this.vy < 0 ? angleChange: -angleChange);
 		}
 	}
 }
