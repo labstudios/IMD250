@@ -6,7 +6,7 @@ package com.breakout
 	public class Ball extends GameObject
 	{
 		private var angle:Number = 225;
-		private var speed:Number = 5;
+		private var speed:Number = 8;
 		private var angleChange:Number = 10;
 		
 		public function Ball():void
@@ -41,6 +41,8 @@ package com.breakout
 				adjustAngle();
 			}
 			
+			checkPaddle();
+			
 			this.vx = Math.cos(this.rads) * speed;
 			this.vy = Math.sin(this.rads) * speed;
 			var nextX = this.x + this.vx;
@@ -48,6 +50,27 @@ package com.breakout
 			
 			this.x = nextX;
 			this.y = nextY;
+		}
+		
+		private function checkPaddle():void
+		{
+			if (this.bottom >= Paddle.instance.top &&
+			this.top <= Paddle.instance.bottom &&
+			this.left <= Paddle.instance.right &&
+			this.right >= Paddle.instance.left)
+			{
+				if (this.y < Paddle.instance.y)
+				{
+					this.bottom = Paddle.instance.top;
+				}
+				else
+				{
+					this.top = Paddle.instance.bottom;
+				}
+				this.vy *= -1;
+				adjustAngle();
+			}
+			
 		}
 		
 		public function adjustAngle():void
