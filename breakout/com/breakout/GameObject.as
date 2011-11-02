@@ -4,8 +4,8 @@ package com.breakout
 	
 	public class GameObject extends MovieClip
 	{
-		protected var vx:Number;
-		protected var vy:Number;
+		protected var vx:Number = 0;
+		protected var vy:Number = 0;
 		
 		public function GameObject():void
 		{

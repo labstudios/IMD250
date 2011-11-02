@@ -42,6 +42,7 @@ package com.breakout
 			}
 			
 			checkPaddle();
+			checkBricks();
 			
 			this.vx = Math.cos(this.rads) * speed;
 			this.vy = Math.sin(this.rads) * speed;
@@ -71,6 +72,46 @@ package com.breakout
 				adjustAngle();
 			}
 			
+		}
+		
+		private function checkBricks():void
+		{
+			for (var i:int = 0; i < Brick.bricks.length; ++i)
+			{
+				var brick:Brick = Brick.bricks[i];
+				//check the left side
+				if (brick.hitTestPoint(this.left, this.y, true))
+				{
+					this.left = brick.right;
+					this.vx *= -1;
+					brick.hit();
+					this.adjustAngle();
+				}
+				//check the right side
+				if (brick.hitTestPoint(this.right, this.y, true))
+				{
+					this.right = brick.left;
+					this.vx *= -1;
+					brick.hit();
+					this.adjustAngle();
+				}
+				//check the top
+				if (brick.hitTestPoint(this.x, this.top, true))
+				{
+					this.top = brick.bottom;
+					this.vy *= -1;
+					brick.hit();
+					this.adjustAngle();
+				}
+				//check the bottom
+				if (brick.hitTestPoint(this.x, this.bottom, true))
+				{
+					this.bottom = brick.top;
+					this.vy *= -1;
+					brick.hit();
+					this.adjustAngle();
+				}
+			}
 		}
 		
 		public function adjustAngle():void
