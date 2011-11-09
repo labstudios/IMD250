@@ -7,6 +7,7 @@ package com.breakout
 	{
 		public static var CONTAINER:DisplayObjectContainer;
 		private static var BRICKS:Vector.<Brick> = new Vector.<Brick>();
+		private static const POINT_WORTH:int = 10;
 		private var beenHit:Boolean = false;
 		private var gravity:Number = .1;
 		
@@ -37,6 +38,7 @@ package com.breakout
 		
 		public function hit():void
 		{
+			Breakout.instance.points += this.beenHit ? POINT_WORTH / 2:POINT_WORTH;
 			this.beenHit = true;
 		}
 		

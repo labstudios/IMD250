@@ -5,13 +5,17 @@ package com.breakout
 	
 	public class Ball extends GameObject
 	{
-		private var angle:Number = 225;
-		private var speed:Number = 8;
+		private static const START_ANGLE:Number = 225;
+		private var angle:Number = START_ANGLE;
+		private var speed:Number = 5;
 		private var angleChange:Number = 10;
+		private var startX:Number;
+		private var startY:Number;
 		
 		public function Ball():void
 		{
-			
+			this.startX = this.x;
+			this.startY = this.y;
 		}
 		
 		override public function run():void
@@ -34,11 +38,9 @@ package com.breakout
 				this.vx *= -1;
 				adjustAngle();
 			}
-			if (this.nextBottom > Breakout.BOTTOM)
+			if (this.top > Breakout.BOTTOM)
 			{
-				this.bottom = Breakout.BOTTOM;
-				this.vy *= -1;
-				adjustAngle();
+				Breakout.instance.deadBall();
 			}
 			
 			checkPaddle();
@@ -114,10 +116,32 @@ package com.breakout
 			}
 		}
 		
+		public function resetPosition():void
+		{
+			this.x = this.startX;
+			this.y = this.startY;
+			this.angle = START_ANGLE;
+		}
+		
 		public function adjustAngle():void
 		{
 			this.angle = Math.atan2(this.vy, this.vx) * 180 / Math.PI;
 			this.angle += this.angleMod;
+			var quadAngle:Number = this.angle % 90;
+			var variance:Number = 15;
+			if (Math.abs(quadAngle) < variance || Math.abs(quadAngle) > 90 - variance)
+			{
+				if (quadAngle < 0)
+				{
+					//negative
+					this.angle += quadAngle < -90 + variance ? variance: -variance;
+				}
+				else
+				{
+					//positive
+					this.angle += quadAngle > 90 - variance ? -variance: variance;
+				}
+			}
 		}
 		
 		public function get rads():Number
