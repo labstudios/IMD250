@@ -5,6 +5,7 @@ package com.asteroids
 	public class Ship extends GameObject
 	{
 		private static var SHIP:Ship;
+		private static const SHOT_SPACE:int = 8;
 		
 		private var _up:Boolean = false;
 		private var _down:Boolean = false;
@@ -15,6 +16,7 @@ package com.asteroids
 		private var rotateSpeed:Number = 8;
 		private var acceleration:Number = .5;
 		private var topSpeed:Number = 6;
+		private var shotSpacer:int = 0;
 		
 		public function Ship():void
 		{
@@ -27,7 +29,22 @@ package com.asteroids
 			this.rotation += this._right ? this.rotateSpeed:0;
 			this._up ? accelerate():null;
 			this._down ? decelerate():null;
-			
+			if (this._space)
+			{
+				if (this.shotSpacer <= 0)
+				{
+					new Bullet(this.x, this.y, this.rotation);
+					this.shotSpacer = SHOT_SPACE;
+				}
+				else
+				{
+					this.shotSpacer--;
+				}
+			}
+			else
+			{
+				this.shotSpacer = 0;
+			}
 			super.run();
 		}
 		
