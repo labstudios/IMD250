@@ -1,6 +1,7 @@
 package com.asteroids
 {
-	
+	import com.greensock.*; 
+	import com.greensock.easing.*;
 	
 	public class Ship extends GameObject
 	{
@@ -18,9 +19,17 @@ package com.asteroids
 		private var topSpeed:Number = 6;
 		private var shotSpacer:int = 0;
 		
+		private var startX;
+		private var startY;
+		private var invincible:Boolean = false;
+		private var invincibleColor:Number = 0xff0000;
+		
 		public function Ship():void
 		{
 			SHIP = this;
+			this.startX = this.x;
+			this.startY = this.y;
+			this.hitSpot.alpha = 0;
 		}
 		
 		override public function run():void
@@ -70,6 +79,29 @@ package com.asteroids
 			{
 				this.speed = 0;
 			}
+		}
+		
+		public function killShip(rock:Rock = null):void
+		{
+			if (!this.invincible)
+			{
+				this.invincible = true;
+				this.x = this.startX;
+				this.y = this.startY;
+				this.speed = 0;
+				Asteroids.game.shipHit();
+				TweenMax.to(this, 0, { colorTransform: { tint:this.invincibleColor, tintAmount:0.5 }} );
+				TweenMax.to(this, 3, { colorTransform: { tint:this.invincibleColor, tintAmount:0 }, onComplete:this.mortal} );
+			}
+			if (rock != null)
+			{
+				rock.hitMe(false);
+			}
+		}
+		
+		private function mortal():void
+		{
+			this.invincible = false;
 		}
 		
 		public static function get ship():Ship

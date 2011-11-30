@@ -10,9 +10,10 @@ package com.asteroids
 			this.rockMinSpeed = 1;
 			this.rockMaxSpeed = 2;
 			this.speed = (Math.random() * (this.rockMaxSpeed - this.rockMinSpeed)) + this.rockMinSpeed;
+			this.pointValue = 25;
 		}
 		
-		override public function hitMe():void
+		override public function hitMe(awardPoints:Boolean = true):void
 		{
 			for (var i:int = 0; i < this.numMed;++i)
 			{
@@ -20,7 +21,7 @@ package com.asteroids
 				rock.x = this.x;
 				rock.y = this.y;
 			}
-			super.hitMe();
+			super.hitMe(awardPoints);
 		}
 	}
 }
